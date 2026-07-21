@@ -1,16 +1,20 @@
+import os
 import pandas as pd
 import spotipy
 import time
 
+from dotenv import load_dotenv
 from numpy.matlib import rand
 from spotipy.oauth2 import SpotifyOAuth
 
 from legacy_app.Atmofy import Atmofy
 from legacy_app.Location import Location
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="e3bb8bebeef74fc3804af340240c5dc1",
-                                               client_secret="361486dd53494e33b5b988933db14e72",
-                                               redirect_uri="http://localhost:1234",
+load_dotenv()
+
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ["SPOTIPY_CLIENT_ID"],
+                                               client_secret=os.environ["SPOTIPY_CLIENT_SECRET"],
+                                               redirect_uri=os.environ["SPOTIPY_REDIRECT_URI"],
                                                scope="user-read-currently-playing user-modify-playback-state"))
 
 def main():
