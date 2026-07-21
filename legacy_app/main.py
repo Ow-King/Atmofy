@@ -5,8 +5,8 @@ import time
 from numpy.matlib import rand
 from spotipy.oauth2 import SpotifyOAuth
 
-from Atmofy import Atmofy
-from Location import Location
+from legacy_app.Atmofy import Atmofy
+from legacy_app.Location import Location
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id="e3bb8bebeef74fc3804af340240c5dc1",
                                                client_secret="361486dd53494e33b5b988933db14e72",
