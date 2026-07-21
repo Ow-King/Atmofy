@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import pandas as pd
 import math
 
@@ -20,8 +20,9 @@ def get_next_3_hour_encoding() -> pd.DataFrame:
     utc_q_hour = get_quarter_hour_slot(utc_now)
     utc_encodings = [sin_cos_encoding_quarter_hour(x) for x in range(utc_q_hour, utc_q_hour + 12)]
     utc_df = pd.DataFrame(utc_encodings, columns=['time_sin', 'time_cos'])
+    utc_df['day_of_week'] = [(utc_now + timedelta(minutes=15 * i)).weekday() for i in range(12)]
 
-    print(utc_df)
+    return utc_df
 
 # Testing
 if __name__ == "__main__":
