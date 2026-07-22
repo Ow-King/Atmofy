@@ -4,8 +4,14 @@ import pandas as pd
 from weather import get_weather
 from time_features import get_next_3_hour_encoding
 
+current_parameters: pd.DataFrame | None = None
 
-def get_next_3_hrs_parameters(latitude, longitude) -> pd.DataFrame:
+# Called on any update
+def get_next_3_hrs_parameters() -> pd.DataFrame:
+    return current_parameters
+
+# Only called every hour to check for new weather
+def update_next_3_hrs_parameters(latitude, longitude) -> None:
     weather_df = get_weather(latitude, longitude)
     time_df = get_next_3_hour_encoding()
     result = pd.concat([weather_df, time_df], axis=1)
@@ -13,5 +19,5 @@ def get_next_3_hrs_parameters(latitude, longitude) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    param_dataframe = get_next_3_hrs_parameters(38.951, -92.334)
+    param_dataframe = get_next_3_hrs_parameters()
     print("\n3-Hour Parameter Data\n", param_dataframe)
