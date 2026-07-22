@@ -164,3 +164,7 @@ cython_debug/
 
 # .cache
 .cache
+
+# App SQLite database (local, per-user data -- not shared/committed)
+data/*.db
+data/*.db-journal

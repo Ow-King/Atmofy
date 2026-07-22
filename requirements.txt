@@ -7,3 +7,4 @@ requests-cache
 retry-requests
 openmeteo-requests
 beautifulsoup4
+sqlalchemy
