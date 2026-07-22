@@ -14,11 +14,13 @@ from app.spotify.client import get_current_playback
 def queue_track(sp, track_uri) -> None:
     sp.add_to_queue(track_uri)
 
+
 #   Convenience loop over queue_track for topping up the 3-song buffer in
 #   one call from playback_loop.py.
 def queue_tracks(sp, tracks_uris) -> None:
     for uri in tracks_uris:
         queue_track(sp, uri)
+
 
 #   Wraps sp.next_track(). Used when playback_loop.py detects the playlist
 #   changed and needs to move off whatever Spotify auto-queued.
@@ -36,6 +38,7 @@ def skip_to_next(sp) -> None:
 #   the user has already skipped/reordered, the comparison stops matching
 #   and leave the rest of the queue alone.
 def clear_queue(sp, queued_track_ids) -> None:
+    # Find out how long is left on the current song
     playback = get_current_playback(sp)
 
     if not playback:
@@ -52,6 +55,17 @@ def clear_queue(sp, queued_track_ids) -> None:
     time.sleep(ms_remaining / 1000)
     print("Skipping Queue Now")
 
+    # Check to make sure the user didnt skip the song
+    playback = get_current_playback(sp)
+    if not playback:
+        print("Nothing Playing")
+        return
+    runtime = playback["progress_ms"]
+
+    if runtime > 1000: # Over a second means that the song was likely skipped
+        return
+
+    # Check the status of the queue and check the ids of the upcoming queued items
     queue_state = sp.queue()
     upcoming_ids = [track["id"] for track in queue_state.get("queue", [])]
 
@@ -67,6 +81,7 @@ def clear_queue(sp, queued_track_ids) -> None:
     print(f"Skipping {stale_count} stale queued track(s)")
     for _ in range(stale_count):
         skip_to_next(sp)
+
 
 if __name__ == "__main__":
     sp = get_spotify_client()

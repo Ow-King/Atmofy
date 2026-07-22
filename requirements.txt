@@ -1,0 +1,9 @@
+spotipy
+python-dotenv
+pandas
+numpy
+requests
+requests-cache
+retry-requests
+openmeteo-requests
+beautifulsoup4
